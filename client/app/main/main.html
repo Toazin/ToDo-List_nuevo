@@ -1,38 +1,126 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
-</header>
-
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}<button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a></li>
+  <dic class="row">
+    <div class="col-xs-3"><!-- COLUMNA IZQ -->
+      <div class="collapse" id="AgregaTarea">
+        <form class="thing-form">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input class="form-control" placeholder="Nombre Tarea..." ng-model="newThing.name">
+          </div>
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea class="form-control" rows="3" placeholder="Describe tu deber..." ng-model="newThing.desc"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select class="form-control">
+              <option>Trabajo</option>
+              <option>Casa</option>
+              <option>TEC</option>
+              <option>Mail</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Repetición</label>
+            <br>
+            <div class="btn-group" data-toggle="buttons"  >
+              <label class="btn btn-primary active" id="Diario">
+                <input type="radio" name="options" autocomplete="off" onclick="CheckRep('Diario')"> Diario
+              </label>
+              <label class="btn btn-primary" id="Semanal">
+                <input type="radio" name="options"  autocomplete="off" onclick="CheckRep('Semanal')"> Semanal
+              </label>
+              <label class="btn btn-primary" id="Mensual">
+                <input type="radio" name="options"  autocomplete="off" onclick="CheckRep('Mensual')"> Mensual
+              </label>
+            </div>
+            <nav>
+              <ul class="pagination pagination-sm">
+                <li class="active"><a href="#">Lu</a></li>
+                <li><a href="#">Ma</a></li>
+                <li><a href="#">Mi</a></li>
+                <li><a href="#">Ju</a></li>
+                <li><a href="#">Vi</a></li>
+                <li><a href="#">Sa</a></li>
+                <li><a href="#">Do</a></li>
+              </ul>
+            </nav>
+
+  <!--button type="submit" class="btn btn-primary" ng-click="addThing()"-->
+          </div>
+        </form>
+        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="addThing()" >
+          Añadir tarea</button>
+      </div>
+      <br>
+      <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="collapse" data-target="#AgregaTarea">
+        Nueva tarea</button>
+    </div>
+    <div class="col-xs-6">
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active" onclick="isActive('Pend')" id="Pend"><a>Pendientes</a></li>
+        <li role="presentation"  onclick="isActive('Aca')" id="Aca"><a>Acabados</a></li>
+        <li role="presentation"  onclick="isActive('Ret')" id="Ret"><a>Retrasados</a></li>
       </ul>
+      <ul class="nav nav-tabs nav-stacked " ng-repeat="thing in awesomeThings">
+        <li data-toggle="collapse" data-target="#{{thing._id}}"><a href="#" tooltip="{{thing.info}}">{{thing.name}}
+          <button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a></li>
+          <div class="collapse" id="{{thing._id}}">
+            <div class="container">
+              <div class="row">
+                <div class="col-xs-4">
+                  {{thing.desc}}
+                </div>
+                <div class="col-xs-2">
+                    <i class="fa fa-pencil-square-o fa-3x"></i>
+                    <i class="fa fa-check-circle-o fa-3x"></i>
+                    <i class="fa fa-check-circle fa-3x"></i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      </ul>
+  <!--    <form class="thing-form">
+        <label>Nueva tarea</label>
+        <p class="input-group">
+          <input type="text" class="form-control" placeholder="Add a new thing here." ng-model="newThing">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary" ng-click="addThing()">Add New</button>
+          </span>
+        </p>
+      </form>
+  -->
+    </div>
+    <div class="col-xs-3" >
+<!--
+      <ul class="list-group" ng-model="MainCtrl">
+        <li class="list-group-item" ng-repeat="j in nuevobjeto" ><a href="#">
+          {{j.nombre}}</a><span class="badge">666</span>
+        </li>
+      </ul>
+-->
+      <ul class="nav nav-pills nav-stacked" ng-model="MainCtrl">
+        <li role="presentation" ng-repeat="j in nuevobjeto" ng-click="imprime()" id="categor"><a href="#">{{j.nombre}}<span class="badge">63</span></a></li>
+
+      </ul>
+      <form ng-model="MainCtrl">
+        <br>
+        <input class="form-control" placeholder="Nombre categoria..." ng-model="MainCtrl" id="valorCate">
+        <br>
+        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="addCate()">Nueva Categoria</button>
+
+      </form>
+
     </div>
   </div>
-
-  <form class="thing-form">
-    <label>Syncs in realtime across clients</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new thing here." ng-model="newThing">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-click="addThing()">Add New</button>
-      </span>
-    </p>
-  </form>
-</div>
+<!-- -->
 
 <footer class="footer">
   <div class="container">
-      <p>Angular Fullstack v2.1.1 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+      <p>Toatzin Padilla Arias
+        </p>
   </div>
 </footer>
