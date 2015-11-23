@@ -16,7 +16,7 @@
           <div class="form-group">
             <label>Categoría</label>
             <select class="form-control" ng-model="newThing.categoria" >
-              <option ng-repeat="j in nuevobjeto" >{{j.nombre}}</option>
+              <option ng-repeat="j in BaseCategorias" >{{j.nombre}}</option>
             </select>
           </div>
           <div class="form-group">
@@ -57,11 +57,13 @@
     </div>
     <div class="col-xs-6">
       <ul class="nav nav-tabs">
-        <li role="presentation" class="active" ng-click="TareasFaltantes()" onclick="isActive('Pend')" id="Pend"><a>Pendientes</a></li>
-        <li role="presentation"  onclick="isActive('Aca')" id="Aca"><a>Acabados</a></li>
+        <li role="presentation" class="active" ng-click="MuestraTodos()" onclick="isActive('Ret')" id="Ret"><a>Todos</a></li>
+        <li role="presentation" ng-click="MuestraTerminados()"  onclick="isActive('Pend')" id="Pend"><a>Pendientes</a></li>
+        <li role="presentation" ng-click="MuestraPendientes()" onclick="isActive('Aca')" id="Aca"><a>Acabados</a></li>
+
       </ul>
-      <ul class="nav nav-tabs nav-stacked " ng-repeat="thing in awesomeThings">
-        <li data-toggle="collapse" data-target="#{{thing._id}}" ng-class="{'ListaComp': thing.done,'ListNoComp': !thing.done}"><a href="#" tooltip="{{thing.info}}">{{thing.name}}
+      <ul class="nav nav-tabs nav-stacked " ng-repeat="thing in BaseTareas">
+        <li data-toggle="collapse" data-target="#{{thing._id}}" ng-class="{'ListaComp': thing.done,'ListNoComp': !thing.done}"><a>{{thing.name}}
           <button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a></li>
           <div class="collapse" id="{{thing._id}}">
             <div class="container">
@@ -70,7 +72,33 @@
                   {{thing.desc}}
                 </div>
                 <div class="col-xs-2" >
-                    <i class="fa fa-pencil-square-o fa-3x"></i>
+
+                    <i data-toggle="modal" data-target="#{{thing._id}}_2" class="fa fa-pencil-square-o fa-3x"></i>
+<!-- MODAL -->
+                    <div class="modal fade" id="{{thing._id}}_2" tabindex="-1" role="dialog" aria-labelledby="{{thing._id}}">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="{{thing._id}}">Editar: {{thing.name}}</h4>
+                          </div>
+                          <div class="modal-body">
+                            <input type="text" class="form-control" value="{{thing.name}}" ng-model="thing.name">
+                            <br>
+                            <textarea class="form-control" rows="3" ng-model="thing.desc">{{thing.desc}}</textarea>
+                            <br>
+                            <select class="form-control" ng-model="thing.categoria" value="{{thing.categoria}}">
+                              <option ng-repeat="j in BaseCategorias" ng-model="thing.desc">{{j.nombre}}</option>
+                            </select>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-control="editThing()" data-dismiss="modal">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+<!-- termina modal-->
                     <i ng-click="checkCompleted(thing)" id="{{thing._id}}" ng-class="{'fa fa-check-circle fa-3x': thing.done, 'fa fa-check-circle-o fa-3x': !thing.done}"></i>
                   <!--  <a class="checker" ng-click="check(task)" href=""><i id="{{task._id}}" ng-class="{'fa fa-check-square': task.completed, 'fa fa-square-o':!task.completed}"></i></a> -->
               <!--      <i class="fa fa-check-circle fa-3x hide" id="Check_false" onclick="Hide(Check_false)"></i> -->
@@ -94,20 +122,25 @@
     <div class="col-xs-3" >
 <!--
       <ul class="list-group" ng-model="MainCtrl">
-        <li class="list-group-item" ng-repeat="j in nuevobjeto" ><a href="#">
+        <li class="list-group-item" ng-repeat="j in BaseCategorias" ><a href="#">
           {{j.nombre}}</a><span class="badge">666</span>
         </li>
       </ul>
 -->
-      <ul class="nav nav-pills nav-stacked" ng-model="MainCtrl">
-        <li role="presentation" ng-repeat="j in nuevobjeto" ng-click="imprime()" id="categor"><a href="#">{{j.nombre}}<span class="badge">{{j.cant}}</span></a></li>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" ng-repeat="CatRow in BaseCategorias" ng-click="imprime()" id="categor"><a href="#">{{CatRow.nombre}}
+          <span class="badge">{{CatRow.cant}}</span><button type="button" class="close" ng-click="deleteThingCate(CatRow)">&times;</button></a></li></a></li>
       </ul>
       <form ng-model="MainCtrl">
         <br>
-        <input class="form-control" placeholder="Nombre categoria..." ng-model="MainCtrl" id="valorCate">
+        <input class="form-control" placeholder="Nombre categoria..." ng-model="newThing.nombre" id="valorCate">
         <br>
-        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="addCate()">Nueva Categoria</button>
-        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="cuenta()">ImprimeArreglo</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="addThingCat()">Nueva Categoria</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="ActualizaCantCate()">Actualiza</button>
+
+
+
+
 
       </form>
 

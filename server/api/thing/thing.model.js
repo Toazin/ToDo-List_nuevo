@@ -15,10 +15,7 @@ var ThingSchema = new Schema({
     mes:String,
     año:Number
   },
-  categoria: {
-      type: String,
-      default: 'default'
-    },
+  categoria: String,
   Repeticion:Number //1--> diario 2--> semalan 3--> mensual
 });
 

@@ -20,7 +20,19 @@ exports.index = function(req, res) {
   });
 };
 
+//MODIFICADO
+exports.show = function(req, res) {
+  console.log("show");
+  console.log(req.params.id);
+  var query = JSON.parse(req.params.id);
+  Thing.find(query, function (err, thing) {
+    if(err) { return handleError(res, err); }
+    if(!thing) { return res.status(404).send('Not Found'); }
+    return res.json(thing);
+  });
+};
 // Get a single thing
+/*
 exports.show = function(req, res) {
   Thing.findById(req.params.id, function (err, thing) {
     if(err) { return handleError(res, err); }
@@ -28,6 +40,7 @@ exports.show = function(req, res) {
     return res.json(thing);
   });
 };
+*/
 
 // Creates a new thing in the DB.
 exports.create = function(req, res) {

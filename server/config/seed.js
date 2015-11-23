@@ -2,35 +2,42 @@
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
-
 'use strict';
 
 var Thing = require('../api/thing/thing.model');
+var Cat = require('../api/AwesomeCategory/AwesomeCategory.model')
 var User = require('../api/user/user.model');
 
 Thing.find({}).remove(function() {
   Thing.create({
-    name : 'Development Tools',
-    desc : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.',
-    done: false
+    name : 'Terminar proyecto',
+    desc : 'Modificar CSS y terminar categorias',
+    done: false,
+    categoria: 'Escuela'
   }, {
-    name : 'Server and Client integration',
-    desc : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.',
-    done: false
+    name : 'Correo profesores',
+    desc : 'Mandar a juan, paco y pedro (de la mar)',
+    done: false,
+    categoria: 'Trabajo'
   }, {
-    name : 'Smart Build System',
-    desc : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html',
-    done: false
-  },  {
-    name : 'Modular Structure',
-    desc : 'Best practice client and server structures allow for more code reusability and maximum scalability',
-    done: false
-  },  {
-    name : 'Optimized Build',
-    desc : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.',
-    done: false
+    name : 'Investigar como hacer Queriees',
+    desc : 'Desde el esquema?',
+    done: false,
+    categoria: 'Trabajo'
   });
+});
 
+Cat.find({}).remove(function() {
+  Cat.create({
+    nombre : 'Escuela',
+    cant : 0
+  }, {
+    nombre : 'Trabajo',
+    cant : 0
+  }, {
+    nombre : 'Casa',
+    cant : 0
+  });
 });
 
 User.find({}).remove(function() {
