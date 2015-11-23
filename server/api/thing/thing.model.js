@@ -6,19 +6,22 @@ var mongoose = require('mongoose'),
 var ThingSchema = new Schema({
   name: String,
   desc: String,
-  active: Boolean,
+  done: {
+    type: Boolean,
+    default: false
+  },
   fecha:{
     dia:Number,
     mes:String,
     año:Number
   },
-  categoria:{
-    id:Number,
-    nombre:String,
-    cantidad:Number
-  },
+  categoria: {
+      type: String,
+      default: 'default'
+    },
   Repeticion:Number //1--> diario 2--> semalan 3--> mensual
 });
+
 
 
 
