@@ -5,10 +5,6 @@ angular.module('toDoApp')
     $scope.BaseTareas = [];
     $scope.BaseCategorias = [];
 
-  //  $scope.BaseCategorias = [
-  //    {nombre:'default', cant: 0},
-  //  ];
-
     $http.get('/api/AwesomeCategorys').success(function(BaseCategorias) {
       $scope.BaseCategorias = BaseCategorias;
       socket.syncUpdates('AwesomeCategory', $scope.BaseCategorias);
@@ -30,6 +26,7 @@ angular.module('toDoApp')
         $scope.UpdateCantidad($scope.BaseCategorias[i]);
       }
     }
+
 // METODO DECREMENTA CATEGORIA
     $scope.decrementCant = function(id){
       console.log($scope.BaseCategorias);
@@ -50,7 +47,7 @@ angular.module('toDoApp')
       }
     }
 
-    //METODO AGREGAR BASE DE TAREAS
+//METODO AGREGAR BASE DE TAREAS
         $scope.addThing = function() {
           if($scope.newThing === '') {
             return;
@@ -60,7 +57,7 @@ angular.module('toDoApp')
           $scope.newThing = '';
         };
 
-    //METODO AGREGAR BASE DE Cat
+//METODO AGREGAR BASE DE Cat
         $scope.addThingCat = function() {
           if($scope.newThing === '') {
             return;
@@ -73,6 +70,7 @@ angular.module('toDoApp')
         };
         //Actualiza cantidad en categorias de la base de tareas
             $scope.ActualizaCantCate = function(){
+              console.log("Funcion ActualizaCant");
               var cantidadCategoria = 0;
               var categoriaString = '';
               //console.log("Entre");
@@ -94,6 +92,7 @@ angular.module('toDoApp')
                 //console.log($scope.BaseCategorias[i]);
                 $scope.UpdateCantidad($scope.BaseCategorias[i]);
               }
+
             }
 
             $scope.UpdateCantidad = function(thing){
@@ -102,19 +101,22 @@ angular.module('toDoApp')
               //console.log("ID: " + thing._id);
               $http.put('/api/AwesomeCategorys/' + thing._id, thing);
             }
-/*
-    $scope.addCate = function(){
-          var categoria = document.getElementById("valorCate").value
-          $scope.BaseCategorias.push({nombre:categoria, cant:0});
-          console.log(categoria);
-          console.log($scope.BaseCategorias);
-          //$scope.addCatDB();
-    };
-*/
-    $scope.editThing = function(thing) {
-      $http.put('/api/things/' + thing._id, thing);
-      $scope.ActualizaCantCate();
-    };
+//FUNCION PARA EDITAR TAREAS
+$scope.editThing = function(thing) {
+  $http.put('/api/things/' + thing._id, thing);
+  $scope.ActualizaCantCate();
+};
+//PRUEBAS GENERALES
+$scope.prueba = function(){
+  console.log("hola");
+}
+
+//Actualiza categoria
+$scope.EditaCategoria = function(CatRow){
+  $http.put('/api/AwesomeCategorys/' + CatRow._id, CatRow);
+  $scope.ActualizaCantCate();
+  /////FALTA FUNCION QE CAMBIE TODAS LAS CATEGORIAS DE UNA A OTRA ;)
+}
 
 //ELIMINA DE BASE TAREAS
     $scope.deleteThing = function(thing) {
@@ -126,25 +128,35 @@ angular.module('toDoApp')
     $scope.deleteThingCate = function(thing) {
       $http.delete('/api/AwesomeCategorys/' + thing._id);
     };
-
+//REVISA SI ESTA EN DONE TRUE O FALSE
     $scope.checkCompleted = function(thing){
       thing.done =! thing.done;
       $http.put('/api/things/' + thing._id, thing);
     }
+//QUERY QUE MUESTRA TERMINADOS DONE=TRUE
     $scope.MuestraTerminados = function(){
       $http.get('/api/things/{"done":"false"}').success(function(BaseTareas) {
         $scope.BaseTareas = BaseTareas;
         socket.syncUpdates('thing', $scope.BaseTareas);
       });
     }
+//QUERY QUE MUESTRA TERMINADOS DONE=FALSE
     $scope.MuestraPendientes = function(){
       $http.get('/api/things/{"done":"true"}').success(function(BaseTareas) {
         $scope.BaseTareas = BaseTareas;
         socket.syncUpdates('thing', $scope.BaseTareas);
       });
     }
+//QUERY QUE MUESTRA TODOS
     $scope.MuestraTodos = function(){
       $http.get('/api/things').success(function(BaseTareas) {
+        $scope.BaseTareas = BaseTareas;
+        socket.syncUpdates('thing', $scope.BaseTareas);
+      });
+    }
+/// INTENTO FILTRO CATEGORIA
+    $scope.MuestraCategoria = function(categoria){
+      $http.get('/api/things/{"categoria": categoria}').success(function(BaseTareas) {
         $scope.BaseTareas = BaseTareas;
         socket.syncUpdates('thing', $scope.BaseTareas);
       });

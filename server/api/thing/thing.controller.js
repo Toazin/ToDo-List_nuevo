@@ -22,8 +22,6 @@ exports.index = function(req, res) {
 
 //MODIFICADO
 exports.show = function(req, res) {
-  console.log("show");
-  console.log(req.params.id);
   var query = JSON.parse(req.params.id);
   Thing.find(query, function (err, thing) {
     if(err) { return handleError(res, err); }

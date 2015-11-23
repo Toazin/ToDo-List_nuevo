@@ -71,10 +71,12 @@
                 <div class="col-xs-4">
                   {{thing.desc}}
                 </div>
-                <div class="col-xs-2" >
 
-                    <i data-toggle="modal" data-target="#{{thing._id}}_2" class="fa fa-pencil-square-o fa-3x"></i>
+                <div class="col-xs-2" >
+                  <i ng-click="checkCompleted(thing)" id="{{thing._id}}" ng-class="{'fa fa-check-circle fa-3x': thing.done, 'fa fa-check-circle-o fa-3x': !thing.done}"></i>
+                  <i data-toggle="modal" data-target="#{{thing._id}}_2" class="fa fa-pencil-square-o fa-3x"></i>
 <!-- MODAL -->
+
                     <div class="modal fade" id="{{thing._id}}_2" tabindex="-1" role="dialog" aria-labelledby="{{thing._id}}">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -83,25 +85,31 @@
                             <h4 class="modal-title" id="{{thing._id}}">Editar: {{thing.name}}</h4>
                           </div>
                           <div class="modal-body">
-                            <input type="text" class="form-control" value="{{thing.name}}" ng-model="thing.name">
-                            <br>
-                            <textarea class="form-control" rows="3" ng-model="thing.desc">{{thing.desc}}</textarea>
-                            <br>
-                            <select class="form-control" ng-model="thing.categoria" value="{{thing.categoria}}">
-                              <option ng-repeat="j in BaseCategorias" ng-model="thing.desc">{{j.nombre}}</option>
-                            </select>
+                            <div class="form-group">
+                              <label>Nombre</label>
+                                <input type="text" class="form-control" value="{{thing.name}}" ng-model="thing.name">
+                            </div>
+                            <div class="form-group">
+                              <label>Descripción</label>
+                              <textarea class="form-control" rows="3" ng-model="thing.desc">{{thing.desc}}</textarea>
+                            </div>
+                            <div class="form-group">
+                              <label>Categoría</label>
+                              <select class="form-control" ng-model="thing.categoria" value="{{thing.categoria}}">
+                                <option ng-repeat="j in BaseCategorias" ng-model="thing.desc">{{j.nombre}}</option>
+                              </select>
+                            </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" ng-control="editThing()" data-dismiss="modal">Save changes</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button ng-click="editThing(thing)" type="button" class="btn btn-primary" data-dismiss="modal">Guardar Cambios</button>
                           </div>
                         </div>
                       </div>
                     </div>
+
 <!-- termina modal-->
-                    <i ng-click="checkCompleted(thing)" id="{{thing._id}}" ng-class="{'fa fa-check-circle fa-3x': thing.done, 'fa fa-check-circle-o fa-3x': !thing.done}"></i>
-                  <!--  <a class="checker" ng-click="check(task)" href=""><i id="{{task._id}}" ng-class="{'fa fa-check-square': task.completed, 'fa fa-square-o':!task.completed}"></i></a> -->
-              <!--      <i class="fa fa-check-circle fa-3x hide" id="Check_false" onclick="Hide(Check_false)"></i> -->
+
                 </div>
               </div>
             </div>
@@ -127,21 +135,52 @@
         </li>
       </ul>
 -->
-      <ul class="nav nav-pills nav-stacked">
-        <li role="presentation" ng-repeat="CatRow in BaseCategorias" ng-click="imprime()" id="categor"><a href="#">{{CatRow.nombre}}
-          <span class="badge">{{CatRow.cant}}</span><button type="button" class="close" ng-click="deleteThingCate(CatRow)">&times;</button></a></li></a></li>
+
+
+
+      <ul class="nav nav-pills nav-stacked" ng-model="MainCtrl">
+        <li role="presentation" ng-repeat="CatRow in BaseCategorias" ng-click="imprime()" id="categor">
+          <a href="#" data-toggle="collapse" data-target="#{{CatRow._id}}">
+            {{CatRow.nombre}}
+            <span class="badge">{{CatRow.cant}}</span>
+            <button type="button" class="close" ng-click="deleteThingCate(CatRow)">&times;</button>
+          </a>
+          <div class="collapse" id="{{CatRow._id}}">
+              <div class="well">
+                <div class="row">
+                    <div class="input-group">
+                    <label>Editar Categoria:  {{CatRow.nombre}}</label>
+                      <input type="text" class="form-control" value="{{CatRow.nombre}}" ng-model="CatRow.nombre" >
+                      <button type="button" class="btn btn-info btn-xs btn-block" ng-click="EditaCategoria(CatRow)">Listo!</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </li>
       </ul>
+
+
       <form ng-model="MainCtrl">
         <br>
         <input class="form-control" placeholder="Nombre categoria..." ng-model="newThing.nombre" id="valorCate">
         <br>
         <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="addThingCat()">Nueva Categoria</button>
-        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="ActualizaCantCate()">Actualiza</button>
+        <br>
 
+        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="ActualizaCantCate()">Actualiza Categorias</button>
 
-
-
-
+<!--INTENTO DE FILTROS POR CATEGORIA-->
+<!--
+        <br><br><br>
+        <div class="form-group">
+          <label>Filtrar por categoria</label>
+          <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="ActualizaCantCate()">Actualiza filtros</button>
+          <br>
+            <select class="form-control" ng-model="thing.categoria" value="{{thing.categoria}}">
+                <option ng-repeat="j in BaseCategorias" ng-model="thing.desc">{{j.nombre}}</option>
+            </select>
+        </div>
+-->
       </form>
 
     </div>
